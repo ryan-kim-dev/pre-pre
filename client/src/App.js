@@ -40,7 +40,7 @@ const App = () => {
 
   return (
     <Container>
-      <form action="/upload/post" onChange={onChange} onSubmit={onSubmit}>
+      <form action="/upload" onChange={onChange} onSubmit={onSubmit}>
         <div>
           <label htmlFor="name">이름</label>
           <input
