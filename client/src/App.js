@@ -4,6 +4,17 @@ import axios from 'axios';
 
 const App = () => {
   const [answerLists, setAnswerLists] = useState([]);
+  const [data, setData] = useState({
+    name: '',
+    title: '',
+    message: '',
+  });
+
+  // * get 요청 변수화 - post 요청하는 onSubmit 함수에서 post 요청 후 호출해서 화면에 db 반영 최신화시킴
+  const getData = async () => {
+    const response = await axios.get('/save');
+    setAnswerLists(response.data);
+  };
 
   useEffect(() => {
     axios
@@ -14,13 +25,7 @@ const App = () => {
         setAnswerLists(res.data);
       })
       .catch(err => console.log(`${err}`));
-  }, [answerLists]);
-
-  const [data, setData] = useState({
-    name: '',
-    title: '',
-    message: '',
-  });
+  }, []);
 
   const onChange = e => {
     const { name, value } = e.target;
@@ -30,17 +35,16 @@ const App = () => {
     }));
   };
 
-  const onSubmit = e => {
+  const onSubmit = async e => {
     e.preventDefault();
-    axios
-      .post('/upload', data)
-      .then(res => console.log(res.data))
-      .catch(err => console.log(`${err}`));
+    console.log(data);
+    await axios.post('/save', data);
+    getData(); // 오늘 테스트 시 지워야 할 수도 - get요청 응답 뺐으므로
   };
 
   return (
     <Container>
-      <form action="/upload" onChange={onChange} onSubmit={onSubmit}>
+      <form onChange={onChange} onSubmit={onSubmit}>
         <div>
           <label htmlFor="name">이름</label>
           <input
@@ -73,12 +77,10 @@ const App = () => {
         </div>
       </form>
       <Lists>
-        {answerLists.map(item => {
+        {answerLists?.map(item => {
           return (
             <ListItem>
               <div>{item.name}</div>
-              <div>{item.title}</div>
-              <div>{item.message}</div>
             </ListItem>
           );
         })}

@@ -37,7 +37,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "json-server": "^0.17.0"
-  }
+  "proxy": "https://c36b-39-7-58-119.jp.ngrok.io/"
 }
