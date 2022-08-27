@@ -51,6 +51,7 @@ userSchema.pre('save', function (next) {
       });
     });
   }
+  return next();
 });
 
 const User = mongoose.model('User', userSchema);
