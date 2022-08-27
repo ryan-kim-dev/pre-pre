@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "backend": "nodemon server.js",
+    "dev": "concurrently \"npm run backend\" \"cd ../client && npm run start\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jsdoc": "^3.6.11",
+    "nodemon": "^2.0.19"
+  },
+  "dependencies": {
+    "concurrently": "^7.3.0",
+    "cors": "^2.8.5",
+    "mongoose": "^6.5.3"
+  }
+}

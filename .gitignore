@@ -180,4 +180,8 @@ thumb
 sketch
 .idea/
 
+# mongoose connection secure
+config
+config/
+
 # End of https://www.toptal.com/developers/gitignore/api/node,react,java
