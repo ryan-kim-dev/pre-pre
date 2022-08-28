@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { newUser } from '../../../redux/actions';
 
 function RegisterPage(props) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [userInfo, setuserInfo] = useState({
     email: '',
@@ -27,7 +29,9 @@ function RegisterPage(props) {
       return alert('비밀번호와 비밀번호 확인 입력이 다릅니다.');
     }
     const res = await dispatch(newUser(userInfo));
-    if (res.payload.success === true) return console.log('회원가입 성공');
+    // 회원가입 성공 - 홈으로 리다이렉트
+    if (res.payload.success === true) return navigate('/login');
+    // 회원가입 실패
     return console.log(`회원 가입 실패. 회원가입 상태: ${res.payload.success}`);
   };
 

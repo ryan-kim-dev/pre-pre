@@ -1,10 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function LandingPage() {
-  // useEffect
-
-  const onClickHandler = () => {};
+  const navigate = useNavigate();
+  const onClickHandler = () => {
+    axios.get('/api/users/logout').then(response => {
+      if (response.data.success) return navigate('/login');
+      return alert('로그아웃 실패!');
+    });
+  };
 
   return (
     <div
