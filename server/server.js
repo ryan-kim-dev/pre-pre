@@ -83,7 +83,7 @@ app.post('/api/users/login', (req, res) => {
   });
 });
 
-// * 2.3 인증페이지 요청 응답
+// * 2.3 인증기능 라우터 - 인증페이지 요청 응답
 // role이 1이면 관리자, 0이면 일반 유저인 경우로 한다.
 app.get('/api/users/auth', auth, (req, res) => {
   // './middleware/auth.js'의 auth 함수에서 코드가 종료되면서 next() 호출하므로
@@ -101,10 +101,22 @@ app.get('/api/users/auth', auth, (req, res) => {
   });
 });
 
+// * 2.4 로그아웃 라우터 - 로그아웃 하는 사용자의 토큰을 지워준다
+// db에서 로그아웃 하는 사용자의 토큰을 지우면 클라이언트의 쿠키에서 가져온 토큰과
+// db의 토큰을 비교 시 맞지 않기 때문에 로그인 상태를 유지할 수 없음.
+app.get('/api/users/logout', auth, (req, res) => {
+  User.findOneAndUpdate({ _id: req.user._id }, { token: '' }, (err, user) => {
+    if (err) return res.json({ success: false, err });
+    return res.status(200).send({
+      success: true,
+    });
+  });
+});
+
 app.listen(port, () => {
   // useNewUrlParser, useUnifiedTopology, useFindAndModify, and useCreateIndex are no longer supported options. Mongoose 6 always behaves as if useNewUrlParser, useUnifiedTopology, and useCreateIndex are true, and useFindAndModify is false. Please remove these options from your code.
   mongoose
     .connect(config.mongoURI)
-    .then(() => console.log('MongoDB connected...'))
+    .then(() => console.log(`${port}번 포트로 서버 실행중, MongoDB 연결됨.`))
     .catch(err => console.log(`${err}`));
 });

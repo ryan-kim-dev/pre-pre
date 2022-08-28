@@ -43,16 +43,19 @@ userSchema.pre('save', function (next) {
 
   // 조건문: 비밀번호를 변경한 경우에만 비밀번호 해싱. 이름, 이메일 변경 시 아래 코드 실행 x
   if (user.isModified('password')) {
+    //비밀번호를 암호화 시킨다.
     bcrypt.genSalt(saltRounds, function (err, salt) {
       if (err) return next(err);
+
       bcrypt.hash(user.password, salt, function (err, hash) {
         if (err) return next(err);
-        user.password = hash; // 평문으로 받은 비밀번호를 해싱해서 저장함.
+        user.password = hash;
         next();
       });
     });
+  } else {
+    next();
   }
-  return next();
 });
 
 // * 비밀번호 일치 여부 조회
