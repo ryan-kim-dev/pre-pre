@@ -1,17 +1,31 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { loginUser } from '../../../redux/actions';
 
 function LoginPage() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [userInfo, setUserInfo] = useState({
+    email: '',
+    password: '',
+  });
 
-  const [Email, setEmail] = useState('');
-  const [Password, setPassword] = useState('');
+  const onChnage = e => {
+    const { name, value } = e.target;
+    setUserInfo(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-  const onSubmitHandler = () => {};
-  const onEmailHandler = () => {};
-  const onPasswordHandler = () => {};
-
+  const onSubmit = async e => {
+    e.preventDefault();
+    const res = await dispatch(loginUser(userInfo));
+    if (res.payload.loginSuccess === true) {
+      return navigate('/');
+    }
+  };
   return (
     <div
       style={{
@@ -24,12 +38,13 @@ function LoginPage() {
     >
       <form
         style={{ display: 'flex', flexDirection: 'column' }}
-        onSubmit={onSubmitHandler}
+        onSubmit={onSubmit}
+        onChange={onChnage}
       >
         <label>Email</label>
-        <input type="email" value={Email} onChange={onEmailHandler} />
+        <input type="email" name="email" />
         <label>Password</label>
-        <input type="password" value={Password} onChange={onPasswordHandler} />
+        <input type="password" name="password" />
         <br />
         <button type="submit">Login</button>
       </form>
