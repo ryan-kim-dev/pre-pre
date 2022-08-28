@@ -1,0 +1,2 @@
+redux-thunk: dispatch 함수에게 함수를 받을수 있게 해준다.
+redux-promise: dispatch 함수에게 promise 객체가 왔을 때 대처할수 있게 해준다.
